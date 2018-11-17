@@ -1,9 +1,9 @@
-import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn, IsNull} from 'typeorm';
 
 @Entity()
 export class Post {
 
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn()
     public id: number;
 
     @Column()
@@ -15,7 +15,7 @@ export class Post {
     @Column('int')
     public votes: number;
 
-    @Column()
+    @Column({nullable: true})
     public author: number;
 
     @Column()

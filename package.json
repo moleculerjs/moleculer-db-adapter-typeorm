@@ -4,12 +4,16 @@
   "description": "typescript sql adapter using typeorm",
   "main": "src/index.js",
   "scripts": {
+    "build": "npm run clean && npm run tsc && npm run copy-templates && npm run copy-types",
     "dev": "node dist/examples/index.js",
     "ci": "jest --watch",
     "test": "jest --coverage",
     "lint": "tslint -p tsconfig.json",
+    "deploy": "npm version patch -m \"Release v%s\" && npm publish",
     "ts": "tsc",
-    "clean": "rimraf dist/*"
+    "clean": "rimraf dist/*",
+    "preversion": "npm test",
+    "postversion": "git push origin master && git push --follow-tags"
   },
   "repository": {
     "type": "git",

@@ -18,11 +18,11 @@ interface IndexMap {
 }
 
 export class TypeOrmDbAdapter<T> {
-    private broker: Moleculer.ServiceBroker;
-    private service: Moleculer.Service;
+    public broker: Moleculer.ServiceBroker;
+    public service: Moleculer.Service;
+    public repository: Repository<T>;
+    public connection: Connection;
     private opts: ConnectionOptions;
-    private connection: Connection;
-    private repository: Repository<T>;
     private entity: EntitySchema<T>;
 
     constructor(opts: ConnectionOptions) {
@@ -203,7 +203,7 @@ export class TypeOrmDbAdapter<T> {
      * @param {Boolean} isCounting
      * @returns {Promise}
      */
-    public createCursor(params: any, isCounting: boolean) {
+    public createCursor(params: any, isCounting: boolean = false) {
         if (params) {
             const query: FindManyOptions<T> = {
                 where: params.query || {}
@@ -270,6 +270,38 @@ export class TypeOrmDbAdapter<T> {
         return entity;
     }
 
+    public init(broker: ServiceBroker, service: Service) {
+        this.broker = broker;
+        this.service = service;
+        const entityFromService = this.service.schema.model;
+        const isValid = !!entityFromService.constructor;
+        if (!isValid) {
+            throw new Error('if model provided - it should a typeorm repository');
+        }
+        this.entity = entityFromService;
+
+    }
+
+    public connect() {
+        const connectionPromise = createConnection({
+            ...this.opts,
+            entities: [this.entity],
+            synchronize: true
+        });
+        return connectionPromise.then((connection) => {
+            this.connection = connection;
+            this.repository = this.connection
+                .getRepository(this.entity);
+        });
+    }
+
+    public disconnect() {
+        if (this.connection) {
+            return this.connection.close();
+        }
+        return Promise.resolve();
+    }
+
     /**
      * Convert the `sort` param to a `sort` object to Sequelize queries.
      *
@@ -300,38 +332,6 @@ export class TypeOrmDbAdapter<T> {
             return sort;
         }
         return {};
-    }
-
-    private init(broker: ServiceBroker, service: Service) {
-        this.broker = broker;
-        this.service = service;
-        const entityFromService = this.service.schema.model;
-        const isValid = !!entityFromService.constructor;
-        if (!isValid) {
-            throw new Error('if model provided - it should a typeorm repository');
-        }
-        this.entity = entityFromService;
-
-    }
-
-    private connect() {
-        return createConnection({
-            ...this.opts,
-            entities: [this.entity],
-            synchronize: true
-        }).then((connection) => {
-            this.connection = connection;
-            this.repository = this.connection
-                .getRepository(this.entity);
-            this.service.schema.model = this.repository;
-        });
-    }
-
-    private disconnect() {
-        if (this.connection) {
-            return this.connection.close();
-        }
-        return Promise.resolve();
     }
 
 }

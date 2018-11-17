@@ -1,25 +1,26 @@
+'use strict';
 module.exports = function (wallaby) {
-	return {
-		files: [
-			"__mocks__/**/*",
-			"src/**/*",
-			"test/services/**",
-			"test/unit/utils.js"
-		],
-		tests: [
-			"test/**/unit/**/**spec.js"
-		],
+    return {
+        files: [
+            '__mocks__/**/*',
+            'config/**/*',
+            'src/**/*'
+        ],
+        tests: [
+            'test/**/*.test.ts?(x)'
+        ],
 
-		compilers: {
-			"**/*.js?(x)": wallaby.compilers.babel({})
+        compilers: {
+            '**/*.ts?(x)': wallaby.compilers.typeScript({
+                module: 'commonjs'
+            })
+        },
 
-		},
+        env: {
+            type: 'node',
+            runner: 'node'
+        },
 
-		env: {
-			type: "node",
-			runner: "node"
-		},
-
-		testFramework: "jest"
-	};
+        testFramework: 'jest'
+    };
 };

@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "typescript sql adapter using typeorm",
   "main": "./src/adapters.ts",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run tsc && npm run copy-types",
     "copy-types": "copyfiles -u 1 ./src/*.d.ts ./dist",

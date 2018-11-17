@@ -1,0 +1,81 @@
+{
+  "name": "moleculer-db-adapter-typeorm",
+  "version": "0.0.1",
+  "description": "typescript sql adapter using typeorm",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node dist/examples/index.js",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "tslint -p tsconfig.json",
+    "ts": "tsc",
+    "clean": "rimraf dist/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkuida/moleculer-db-adapter-typeorm.git"
+  },
+  "keywords": [
+    "moleculer",
+    "database",
+    "typeorm"
+  ],
+  "author": "Dan Kuida",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dkuida/moleculer-db-adapter-typeorm/issues"
+  },
+  "homepage": "https://github.com/dkuida/moleculer-db-adapter-typeorm#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "@types/node": "^10.12.2",
+    "benchmarkify": "2.1.0",
+    "coveralls": "3.0.2",
+    "eslint": "^5.7.0",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "moleculer": "0.13.3",
+    "moleculer-decorators": "^1.0.16",
+    "pg": "^7.6.1",
+    "sqlite3": "^4.0.4",
+    "tedious": "3.0.1",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.1.6",
+    "typescript-eslint-parser": "^20.1.1"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.12",
+    "typeorm": "^0.2.9",
+    "moleculer-db": "^0.7.6"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "rootDir": "./services",
+    "roots": [
+      "../test"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": ".*\\.(test|spec).(ts|js)$",
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "./tsconfig.json"
+      }
+    },
+    "engines": {
+      "node": ">= 8.x.x"
+    },
+    "setupFiles": [],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}

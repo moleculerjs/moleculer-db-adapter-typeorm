@@ -2,7 +2,7 @@
   "name": "moleculer-db-adapter-typeorm",
   "version": "0.0.4",
   "description": "typescript sql adapter using typeorm",
-  "main": "./src/adapters.ts",
+  "main": "./src/adapter.ts",
   "types": "./src/index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run tsc && npm run copy-types",

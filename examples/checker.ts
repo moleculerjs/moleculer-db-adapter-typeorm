@@ -1,39 +1,48 @@
-const _ = require('lodash');
-const Promise = require('bluebird');
-const chalk = require('chalk');
+/* tslint:disable no-console*/
+import chalk from 'chalk';
 
-class ModuleChecker {
+import * as Promise from 'bluebird';
 
-    constructor(okCount) {
+export class ModuleChecker {
+    private tests: any[];
+    private okCount: any;
+    private ok: number;
+    private fail: number;
+
+    constructor(okCount: number) {
         this.tests = [];
         this.okCount = okCount;
         this.ok = 0;
         this.fail = 0;
     }
 
-    add(title, fn, cb) {
-        this.tests.push(() => Promise.resolve(this.printTitle(title)).then(() => fn()).then(rsp => {
-            let res = cb(rsp);
-            if (Array.isArray(res))
-                res.map(r => this.checkValid(r));
-            else if (res != null)
+    public add(title: string, fn: any, cb: any) {
+        this.tests.push(() => Promise.resolve(this.printTitle(title)).then(() => fn()).then((rsp: any) => {
+            const res = cb(rsp);
+            if (Array.isArray(res)) {
+                res.map((r) => this.checkValid(r));
+            }
+            else if (res != null) {
                 this.checkValid(res);
+            }
         }));
     }
 
-    execute() {
-        return Promise.each(this.tests, fn => fn());
+    public execute() {
+        return Promise.each(this.tests, (fn: any) => fn());
     }
 
-    printTitle(text) {
+    public printTitle(text: string) {
+
         console.log();
         console.log(chalk.yellow.bold(`--- ${text} ---`));
     }
 
-    checkValid(cond) {
+    public checkValid(cond: any) {
         let res = cond;
-        if (_.isFunction(cond))
+        if (typeof cond === 'function') {
             res = cond();
+        }
 
         if (res) {
             this.ok++;
@@ -44,12 +53,10 @@ class ModuleChecker {
         }
     }
 
-    printTotal() {
+    public printTotal() {
         console.log();
-        console.log(chalk.bgGreen.yellow.bold(`--- OK: ${this.ok} of ${this.okCount} ---`), this.fail > 0 ? ' | ' + chalk.bgRed.yellow.bold(`!!! FAIL: ${this.fail} !!!`) : '');
+        console.log(chalk.bgGreen.yellow.bold(`--- OK: ${this.ok} of ${this.okCount} ---`),
+            this.fail > 0 ? ' | ' + chalk.bgRed.yellow.bold(`!!! FAIL: ${this.fail} !!!`) : '');
         console.log();
     }
 }
-
-
-module.exports = ModuleChecker;

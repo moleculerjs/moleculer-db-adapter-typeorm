@@ -3,22 +3,27 @@ import {
 
     createConnection,
     ConnectionOptions,
-    Connection, EntitySchema, Not, Any, createQueryBuilder, Entity, Repository, Like
+    Connection,
+    EntitySchema,
+    Repository,
+    FindOneOptions,
+    DeepPartial, FindConditions, FindManyOptions
 } from 'typeorm';
 import * as Moleculer from 'moleculer';
+/* tslint:disable-next-line */
 import {Service, ServiceBroker} from 'moleculer';
 
 interface IndexMap {
     [key: string]: string;
 }
 
-export class TypeOrmDbAdapter {
+export class TypeOrmDbAdapter<T> {
     private broker: Moleculer.ServiceBroker;
     private service: Moleculer.Service;
     private opts: ConnectionOptions;
     private connection: Connection;
-    private repository: Repository<any>;
-    private entity: EntitySchema;
+    private repository: Repository<T>;
+    private entity: EntitySchema<T>;
 
     constructor(opts: ConnectionOptions) {
         this.opts = opts;
@@ -51,20 +56,20 @@ export class TypeOrmDbAdapter {
      * @returns {Promise}
      * @memberof MemoryDbAdapter
      */
-    public findOne(query) {
+    public findOne(query: FindOneOptions) {
         return this.repository.findOne(query);
     }
 
     /**
      * Find an entities by ID
      *
-     * @param {any} _id
+     * @param {any} id
      * @returns {Promise}
      *
      * @memberof SequelizeDbAdapter
      */
-    public findById(_id) {
-        return this.repository.findByIds([_id]).then((result) => Promise.resolve(result[0]));
+    public findById(id: number) {
+        return this.repository.findByIds([id]).then((result) => Promise.resolve(result[0]));
     }
 
     /**
@@ -96,19 +101,11 @@ export class TypeOrmDbAdapter {
         return this.createCursor(filters, true);
     }
 
-    /**
-     * Insert an repository
-     *
-     * @param {Object} repository
-     * @returns {Promise}
-     *
-     * @memberof SequelizeDbAdapter
-     */
-    public insert(entity) {
+    public insert(entity: any) {
         return this.repository.save(entity);
     }
 
-    public create(entity) {
+    public create(entity: any) {
         return this.insert(entity);
     }
 
@@ -120,7 +117,7 @@ export class TypeOrmDbAdapter {
      *
      * @memberof SequelizeDbAdapter
      */
-    public insertMany(entities) {
+    public insertMany(entities: any[]) {
         return Promise.all(entities.map((e) => this.repository.create(e)));
     }
 
@@ -133,8 +130,9 @@ export class TypeOrmDbAdapter {
      *
      * @memberof SequelizeDbAdapter
      */
-    public updateMany(where, update) {
-        return this.repository.update({where}, update);
+    public updateMany(where: FindConditions<T>, update: DeepPartial<T>) {
+        const criteria: FindConditions<T> = {where} as any;
+        return this.repository.update(criteria, update);
     }
 
     /**
@@ -146,7 +144,7 @@ export class TypeOrmDbAdapter {
      *
      * @memberof SequelizeDbAdapter
      */
-    public updateById(id: number, update) {
+    public updateById(id: number, update: { $set: DeepPartial<T> }) {
         return this.repository.update(id, update.$set);
     }
 
@@ -158,7 +156,7 @@ export class TypeOrmDbAdapter {
      *
      * @memberof SequelizeDbAdapter
      */
-    public removeMany(where) {
+    public removeMany(where: FindConditions<T>) {
         return this.repository.delete(where);
     }
 
@@ -188,14 +186,7 @@ export class TypeOrmDbAdapter {
         return this.repository.clear();
     }
 
-    /**
-     * Convert DB repository to JSON object
-     *
-     * @param {any} repository
-     * @returns {Object}
-     * @memberof SequelizeDbAdapter
-     */
-    public entityToObject(entity) {
+    public entityToObject(entity: T) {
         return entity;
     }
 
@@ -212,9 +203,9 @@ export class TypeOrmDbAdapter {
      * @param {Boolean} isCounting
      * @returns {Promise}
      */
-    public createCursor(params, isCounting: boolean) {
+    public createCursor(params: any, isCounting: boolean) {
         if (params) {
-            const query = {
+            const query: FindManyOptions<T> = {
                 where: params.query || {}
             };
 
@@ -227,18 +218,18 @@ export class TypeOrmDbAdapter {
             if (params.sort) {
                 const sort = this.transformSort(params.sort);
                 if (sort) {
-                    query.order = sort;
+                    query.order = sort as any;
                 }
             }
 
             // Offset
             if (Number.isInteger(params.offset) && params.offset > 0) {
-                query.offset = params.offset;
+                query.skip = params.offset;
             }
 
             // Limit
             if (Number.isInteger(params.limit) && params.limit > 0) {
-                query.limit = params.limit;
+                query.take = params.limit;
             }
 
             if (isCounting) {
@@ -264,7 +255,7 @@ export class TypeOrmDbAdapter {
      * @memberof SequelizeDbAdapter
      * @returns {Object} Entity
      */
-    public beforeSaveTransformID(entity, idField) {
+    public beforeSaveTransformID(entity: T, idField: string) {
         return entity;
     }
 
@@ -275,7 +266,7 @@ export class TypeOrmDbAdapter {
      * @memberof SequelizeDbAdapter
      * @returns {Object} Entity
      */
-    public afterRetrieveTransformID(entity, idField) {
+    public afterRetrieveTransformID(entity: T, idField: string) {
         return entity;
     }
 
@@ -301,6 +292,7 @@ export class TypeOrmDbAdapter {
                     sortObj[s] = 'ASC';
                 }
             });
+            // @ts-ignore
             return sortObj;
         }
 

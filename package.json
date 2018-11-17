@@ -1,6 +1,6 @@
 {
   "name": "moleculer-db-adapter-typeorm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "typescript sql adapter using typeorm",
   "main": "./src/adapters.ts",
   "types": "./src/index.d.ts",

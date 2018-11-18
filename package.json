@@ -7,7 +7,7 @@
   "scripts": {
     "build": "npm run clean && npm run tsc && npm run copy-types",
     "copy-types": "copyfiles -u 1 ./src/*.d.ts ./dist",
-    "dev": "node dist/examples/index.js",
+    "dev": "node dist/examples/integration/index.js",
     "test": "jest --coverage",
     "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
@@ -44,6 +44,7 @@
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "moleculer": "^0.13.4",
+    "sqlite": "^3.0.0",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

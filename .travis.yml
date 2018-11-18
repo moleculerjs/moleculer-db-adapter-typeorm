@@ -6,8 +6,7 @@ node_js:
 - "10"
 - "8"
 script:
-- npm run build
-- npm lint
-- npm test
+- npm run lint
+- npm run test
 after_success:
 - npm run coverall

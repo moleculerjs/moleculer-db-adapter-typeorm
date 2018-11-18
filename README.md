@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/518b3bf84b8c4538b1e133d397ce700b)](https://app.codacy.com/app/dkuida/moleculer-db-adapter-typeorm?utm_source=github.com&utm_medium=referral&utm_content=dkuida/moleculer-db-adapter-typeorm&utm_campaign=Badge_Grade_Dashboard)
 # moleculer-db-adapter-typeorm [![NPM version](https://img.shields.io/npm/v/moleculer-db-adapter-sequelize.svg)](https://www.npmjs.com/package/moleculer-db-adapter-typeorm)
 
 SQL adapter (Postgres, MySQL, SQLite & MSSQL, Oracle and many more) for Moleculer DB service with [typeorm](https://github.com/typeorm/typeorm).

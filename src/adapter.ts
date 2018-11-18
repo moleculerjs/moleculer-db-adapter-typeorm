@@ -152,7 +152,7 @@ export class TypeOrmDbAdapter<T> {
     }
 
     private _enrichWithOptionalParameters(params: any, query: FindManyOptions<T>) {
-        if (typeof params.search === 'string' && params.search !== '') {
+        if (params.search) {
             throw new Error('Not supported because of missing or clause meanwhile in typeorm');
         }
 

@@ -7,10 +7,9 @@
   "scripts": {
     "build": "npm run clean && npm run tsc && npm run copy-types",
     "copy-types": "copyfiles -u 1 ./src/*.d.ts ./dist",
-    "coverall": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "dev": "node dist/examples/index.js",
-    "ci": "jest --watch",
     "test": "jest --coverage",
+    "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
     "deploy": "npm version patch -m \"Release v%s\" && npm publish",
     "tsc": "tsc --declaration",
@@ -62,13 +61,12 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "rootDir": "./services",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/services/"
+    "rootDir": "./",
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
     ],
     "roots": [
-      "../test"
+      "./test"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

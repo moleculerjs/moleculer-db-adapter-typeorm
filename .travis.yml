@@ -7,6 +7,4 @@ node_js:
 - "8"
 script:
 - npm run lint
-- npm run test
-after_success:
-- npm run coverall
+- npm run test:travis

@@ -11,6 +11,7 @@
     "dev": "node dist/examples/index.js",
     "ci": "jest --watch",
     "test": "jest --coverage",
+    "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
     "deploy": "npm version patch -m \"Release v%s\" && npm publish",
     "tsc": "tsc --declaration",

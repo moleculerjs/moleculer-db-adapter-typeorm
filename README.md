@@ -1,8 +1,16 @@
-# moleculer-db-adapter-typeorm [![NPM version](https://img.shields.io/npm/v/moleculer-db-adapter-sequelize.svg)](https://www.npmjs.com/package/moleculer-db-adapter-typeorm)
+# moleculer-db-adapter-typeorm [![NPM version](https://img.shields.io/npm/v/moleculer-db-adapter-typeorm.svg)](https://www.npmjs.com/package/moleculer-db-adapter-typeorm)
+
+
+[![Build Status](https://travis-ci.com/dkuida/moleculer-db-adapter-typeorm.svg?branch=master)](https://travis-ci.com/dkuida/moleculer-db-adapter-typeorm)
+[![Coverage Status](https://coveralls.io/repos/github/dkuida/moleculer-db-adapter-typeorm/badge.svg)](https://coveralls.io/github/dkuida/moleculer-db-adapter-typeorm)
+[![Maintainability](https://api.codeclimate.com/v1/badges/48baf794e43b2537a4a0/maintainability)](https://codeclimate.com/github/dkuida/moleculer-db-adapter-typeorm/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/48baf794e43b2537a4a0/test_coverage)](https://codeclimate.com/github/dkuida/moleculer-db-adapter-typeorm/test_coverage)
+[![Known Vulnerabilities](https://snyk.io/test/github/dkuida/moleculer-db-adapter-typeorm/badge.svg)](https://snyk.io/test/github/dkuida/moleculer-db-adapter-typeorm)
+
 
 SQL adapter (Postgres, MySQL, SQLite & MSSQL, Oracle and many more) for Moleculer DB service with [typeorm](https://github.com/typeorm/typeorm).
 
-it is essentially a clone of the great work on adaptor for [Sequelize](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db-adapter-sequelize) by the auther of the project - since i have a need to use oracle - and i prefer typescript i just created a replice of the project.
+it is essentially a clone of the great work on adaptor for [Sequelize](https://github.com/moleculerjs/moleculer-db/tree/master/packages/moleculer-db-adapter-sequelize) by the author of the project - since i have a need to use oracle - and i prefer typescript i just created a replace of the project.
 
 
 it covers only the basics - but when you need more than basics just use the exposed

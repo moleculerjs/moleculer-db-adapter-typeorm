@@ -7,9 +7,9 @@
   "scripts": {
     "build": "npm run clean && npm run tsc && npm run copy-types",
     "copy-types": "copyfiles -u 1 ./src/*.d.ts ./dist",
-    "dev": "node dist/examples/index.js",
-    "ci": "jest --watch",
+    "dev": "node dist/examples/integration/index.js",
     "test": "jest --coverage",
+    "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
     "deploy": "npm version patch -m \"Release v%s\" && npm publish",
     "tsc": "tsc --declaration",
@@ -38,18 +38,19 @@
     "@types/node": "^10.12.2",
     "bluebird": "^3.5.3",
     "chalk": "^2.4.1",
+    "copyfiles": "^2.1.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.9.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "moleculer": "^0.13.4",
+    "sqlite": "^3.0.0",
+    "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.1.6",
-    "copyfiles": "^2.1.0",
-    "typescript-eslint-parser": "^21.0.1",
-    "ts-jest": "^23.10.4"
+    "typescript-eslint-parser": "^21.0.1"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.12",
@@ -61,9 +62,12 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "rootDir": "./services",
+    "rootDir": "./",
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
     "roots": [
-      "../test"
+      "./test"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

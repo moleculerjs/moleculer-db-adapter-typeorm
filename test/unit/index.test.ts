@@ -104,7 +104,7 @@ describe('Test TypeOrmAdapter', () => {
             it('call without params as counting', () => {
                 adapter.createCursor(null, true);
                 expect(adapter.repository.count).toHaveBeenCalledTimes(1);
-                expect(adapter.repository.count).toHaveBeenCalledWith();
+                expect(adapter.repository.count).toHaveBeenCalledWith(undefined);
             });
 
             it('call with query', () => {

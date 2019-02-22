@@ -12,11 +12,11 @@
     "test": "jest --coverage",
     "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
-    "deploy": "npm version patch -m \"Release v%s\" && npm publish",
-    "tsc": "tsc --declaration",
+    "tsc": "tsc",
+    "ts:watch": "tsc --watch",
     "clean": "rimraf dist/*",
-    "preversion": "npm test",
-    "postversion": "git push origin master && git push --follow-tags"
+    "preversion": "npm run lint && npm run tsc && npm run test && npm run test:integ",
+    "postversion": "git push && git push --follow-tags"
   },
   "repository": {
     "type": "git",

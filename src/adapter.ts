@@ -7,11 +7,14 @@ import {
     EntitySchema,
     Repository,
     FindOneOptions,
-    DeepPartial, FindConditions, FindManyOptions
+    DeepPartial, FindConditions, FindManyOptions,
+    QueryBuilder
 } from 'typeorm';
 import * as Moleculer from 'moleculer';
 /* tslint:disable-next-line */
 import {Service, ServiceBroker} from 'moleculer';
+/* tslint:disable-next-line:no-submodule-imports */
+import {QueryDeepPartialEntity} from 'typeorm/query-builder/QueryPartialEntity';
 
 interface IndexMap {
     [key: string]: string;
@@ -103,11 +106,11 @@ export class TypeOrmDbAdapter<T> {
 
     public updateMany(where: FindConditions<T>, update: DeepPartial<T>) {
         const criteria: FindConditions<T> = {where} as any;
-        return this.repository.update(criteria, update);
+        return this.repository.update(criteria, update as QueryDeepPartialEntity<T>);
     }
 
     public updateById(id: number, update: { $set: DeepPartial<T> }) {
-        return this.repository.update(id, update.$set);
+        return this.repository.update(id, update.$set as QueryDeepPartialEntity<T>);
     }
 
     public removeMany(where: FindConditions<T>) {

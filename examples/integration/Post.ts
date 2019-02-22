@@ -1,5 +1,4 @@
 import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn, IsNull} from 'typeorm';
-
 @Entity()
 export class Post {
 

@@ -47,6 +47,7 @@
     "sqlite": "^3.0.2",
     "ts-jest": "^24.0.0",
     "ts-node": "^7.0.1",
+    "pre-commit": "^1.2.2",
     "tslint": "^5.12.1",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.3.3333",
@@ -60,6 +61,11 @@
   "engines": {
     "node": ">= 8.x.x"
   },
+  "pre-commit": [
+    "lint",
+    "tsc",
+    "test"
+  ],
   "jest": {
     "testEnvironment": "node",
     "rootDir": "./",

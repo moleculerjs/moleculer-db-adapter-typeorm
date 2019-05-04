@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+
 import {
 
     createConnection,
@@ -61,11 +61,11 @@ export class TypeOrmDbAdapter<T> {
         return Promise.all(entities.map((e) => this.repository.create(e)));
     }
 
-    public beforeSaveTransformID(entity: T, idField: string) {
+    public beforeSaveTransformID(entity: T, _idField: string) {
         return entity;
     }
 
-    public afterRetrieveTransformID(entity: T, idField: string) {
+    public afterRetrieveTransformID(entity: T, _idField: string) {
         return entity;
     }
 
@@ -103,11 +103,11 @@ export class TypeOrmDbAdapter<T> {
 
     public updateMany(where: FindConditions<T>, update: DeepPartial<T>) {
         const criteria: FindConditions<T> = {where} as any;
-        return this.repository.update(criteria, update);
+        return this.repository.update(criteria,<any>  update);
     }
 
     public updateById(id: number, update: { $set: DeepPartial<T> }) {
-        return this.repository.update(id, update.$set);
+        return this.repository.update(id, <any> update.$set);
     }
 
     public removeMany(where: FindConditions<T>) {
@@ -116,7 +116,7 @@ export class TypeOrmDbAdapter<T> {
 
     public removeById(id: number) {
         const result = this.repository.delete(id);
-        return result.then((res) => {
+        return result.then(() => {
             return {id};
         });
     }

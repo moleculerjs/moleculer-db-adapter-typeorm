@@ -1,9 +1,8 @@
 {
   "name": "moleculer-db-adapter-typeorm",
-  "version": "0.0.7",
+  "version": "0.1.2",
   "description": "typescript sql adapter using typeorm",
-  "main": "./src/adapter.ts",
-  "types": "./src/index.d.ts",
+  "main": "./dist/adapter.js",
   "scripts": {
     "build": "npm run clean && npm run tsc && npm run copy-types",
     "copy-types": "copyfiles -u 1 ./src/*.d.ts ./dist",
@@ -13,11 +12,11 @@
     "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint -p tsconfig.json --fix",
-    "tsc": "tsc",
+    "tsc": "tsc --declaration",
     "ts:watch": "tsc --watch",
     "clean": "rimraf dist/*",
-    "deploy": "npm version patch -m \"Release v%s\" && npm publish",
-    "preversion": "npm run lint && npm run tsc && npm run test && npm run test:integ",
+    "deploy": "npm build && npm version patch -m \"Release v%s\" && npm publish",
+    "preversion": "npm run lint && npm run tsc && npm run test",
     "postversion": "git push && git push --follow-tags"
   },
   "repository": {

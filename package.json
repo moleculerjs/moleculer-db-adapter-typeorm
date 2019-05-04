@@ -56,7 +56,9 @@
     "typescript": "^3.4.5",
     "tslint-eslint-rules": "^5.4.0",
     "@typescript-eslint/parser": "^1.5.0",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "moleculer-db": "^0.7.9",
+    "typeorm": "^0.2.13"
   },
   "peerDependencies": {
     "moleculer-db": "^0.7.9",

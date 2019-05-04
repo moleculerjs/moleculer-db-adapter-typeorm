@@ -16,6 +16,7 @@
     "tsc": "tsc",
     "ts:watch": "tsc --watch",
     "clean": "rimraf dist/*",
+    "deploy": "npm version patch -m \"Release v%s\" && npm publish",
     "preversion": "npm run lint && npm run tsc && npm run test && npm run test:integ",
     "postversion": "git push && git push --follow-tags"
   },
@@ -54,7 +55,8 @@
     "tslint": "^5.16.0",
     "typescript": "^3.4.5",
     "tslint-eslint-rules": "^5.4.0",
-    "@typescript-eslint/parser": "^1.5.0"
+    "@typescript-eslint/parser": "^1.5.0",
+    "pre-commit": "^1.2.2"
   },
   "peerDependencies": {
     "moleculer-db": "^0.7.9",

@@ -15,7 +15,7 @@
     "tsc": "tsc --declaration",
     "ts:watch": "tsc --watch",
     "clean": "rimraf dist/*",
-    "deploy": "npm version patch -m \"Release v%s\" && npm publish",
+    "deploy": "npm build && npm version patch -m \"Release v%s\" && npm publish",
     "preversion": "npm run lint && npm run tsc && npm run test",
     "postversion": "git push && git push --follow-tags"
   },

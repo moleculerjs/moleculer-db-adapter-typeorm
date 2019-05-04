@@ -152,10 +152,10 @@ describe('Test TypeOrmAdapter', () => {
             });
 
             it('call find', () => {
-                adapter.createCursor = jest.fn(() => Promise.resolve());
+                adapter.createCursor = <any> jest.fn(() => Promise.resolve());
 
                 const params = {};
-                const find = adapter.find(params);
+                adapter.find(params);
                 expect(adapter.createCursor).toHaveBeenCalledTimes(1);
                 expect(adapter.createCursor).toHaveBeenCalledWith(params, false);
             });
@@ -180,7 +180,7 @@ describe('Test TypeOrmAdapter', () => {
             });
 
             it('call count', () => {
-                adapter.createCursor = jest.fn(() => Promise.resolve());
+                adapter.createCursor =<any> jest.fn(() => Promise.resolve());
                 const params = {};
                 adapter.count(params);
                 expect(adapter.createCursor).toHaveBeenCalledTimes(1);

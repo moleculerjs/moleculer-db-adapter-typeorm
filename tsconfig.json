@@ -1,21 +1,24 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ESNext",
+    "target": "es2017",
     "noImplicitAny": true,
     "outDir": "./dist",
     "sourceMap": true,
     "strictNullChecks": true,
     "lib": [ "es2017", "es2015", "dom" ],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
+
   },
   "include": [
-    "src/**/*.ts",
-    "examples/**/*.ts"
-
+    "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "__mocks__/**/*",
+    "**/__mocks__/*"
   ]
 }

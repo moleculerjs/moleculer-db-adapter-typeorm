@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn, IsNull} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 @Entity()
 export class Post {
 
@@ -19,5 +19,8 @@ export class Post {
 
     @Column()
     public status: boolean;
+
+    @UpdateDateColumn()
+    public updatedAt: number;
 
 }

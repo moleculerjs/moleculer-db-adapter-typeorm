@@ -1,6 +1,6 @@
 /* tslint:disable no-var-requires*/
 /* tslint:disable no-console*/
-import "reflect-metadata";
+import 'reflect-metadata';
 import {ModuleChecker as moduleChecker} from '../checker';
 // Create broker
 

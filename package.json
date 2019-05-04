@@ -12,6 +12,7 @@
     "test": "jest --coverage",
     "test:travis": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "tslint -p tsconfig.json",
+    "lint:fix": "tslint -p tsconfig.json --fix",
     "tsc": "tsc",
     "ts:watch": "tsc --watch",
     "clean": "rimraf dist/*",
@@ -45,20 +46,20 @@
     "eslint": "^5.14.1",
     "jest": "^24.1.0",
     "jest-cli": "^24.1.0",
-    "moleculer": "^0.13.7",
-    "moleculer-decorators": "^1.0.16",
+    "moleculer": "^0.13.9",
+    "moleculer-decorators": "^1.1.0",
     "reflect-metadata": "^0.1.13",
     "sqlite": "^3.0.2",
     "ts-jest": "^24.0.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.1",
+    "typescript": "^3.4.5",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.3.3333",
-    "typescript-eslint-parser": "^21.0.1"
+    "@typescript-eslint/parser": "^1.5.0"
   },
   "dependencies": {
     "typeorm": "^0.2.13",
-    "moleculer-db": "^0.7.7"
+    "moleculer-db": "^0.7.9"
   },
   "engines": {
     "node": ">= 10.x.x"

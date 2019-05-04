@@ -1,10 +1,10 @@
 /* tslint:disable no-var-requires*/
 import {Post} from './Post';
-
+const moleculer = require('moleculer');
 const storeService = require('moleculer-db');
-import {Action, BaseSchema, Method, Service} from 'moleculer-decorators';
+import {Action, Service} from 'moleculer-decorators';
 
-import {TypeOrmDbAdapter} from '../../src/adapter';
+import {TypeOrmDbAdapter} from '../../adapter';
 import {Context} from 'moleculer';
 
 @Service({
@@ -21,7 +21,7 @@ import {Context} from 'moleculer';
         idField: 'id'
     },
 })
-export default class PostsService extends BaseSchema {
+export default class PostsService extends moleculer.Service {
 
     @Action({
         // params: {id: 'number'},

@@ -2,6 +2,7 @@
 test
 src
 .drone.yml
+*.yml
 wallaby.js
 !dist/**
 **/coverage/**/*

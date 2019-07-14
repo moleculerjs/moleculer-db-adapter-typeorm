@@ -3,7 +3,7 @@ import {ServiceBroker} from 'moleculer';
 jest.mock('typeorm');
 import {createConnection} from 'typeorm';
 
-import {TypeOrmDbAdapter} from '../../src/adapter';
+import {TypeOrmDbAdapter} from '../../src/adapter/adapter';
 
 const fakeModel = jest.fn();
 

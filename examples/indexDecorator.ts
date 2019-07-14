@@ -1,59 +1,17 @@
 /* tslint:disable no-var-requires*/
-const storeService = require('moleculer-db');
-const {ServiceBroker} = require('moleculer');
-/* tslint:enable */
-import {Post} from './Post';
-import {TypeOrmDbAdapter} from '../../src';
-import {Context} from 'moleculer';
 /* tslint:disable no-console*/
-import {ModuleChecker as moduleChecker} from '../checker';
+import 'reflect-metadata';
+import {ModuleChecker as moduleChecker} from './checker';
+// Create broker
 
+const {ServiceBroker} = require('moleculer');
 const broker = new ServiceBroker({
     logLevel: 'debug',
     logger: console
 });
-
-broker.createService(storeService, {
-    adapter: new TypeOrmDbAdapter({
-        database: 'memory',
-        name: 'memory',
-        type: 'sqlite',
-    }),
-    name: 'posts',
-
-    model: Post,
-    settings: {
-        fields: ['id', 'title', 'content', 'votes', 'status', 'author'],
-        idField: 'id'
-    },
-
-    actions: {
-        vote(ctx: Context) {
-            return this.adapter.findById(ctx.params.id)
-                .then((post: Post) => {
-                    post.votes++;
-                    return this.adapter.repository.save(post);
-                })
-                .then(() => this.adapter.findById(ctx.params.id))
-                .then((doc: any) => this.transformDocuments(ctx, ctx.params, doc));
-        },
-
-        unvote(ctx: Context) {
-            return this.adapter.findById(ctx.params.id)
-                .then((post: Post) => {
-                    post.votes--;
-                    return this.adapter.repository.save(post);
-                })
-                .then(() => this.adapter.findById(ctx.params.id))
-                .then((doc: any) => this.transformDocuments(ctx, ctx.params, doc));
-        }
-    },
-
-    afterConnected() {
-        this.logger.info('Connected successfully');
-        return this.adapter.clear();
-    }
-});
+import posts from './posts.service';
+// Load my service
+broker.createService(posts);
 
 const checker = new moduleChecker(11);
 

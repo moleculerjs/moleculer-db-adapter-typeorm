@@ -13,7 +13,27 @@
     "trailing-comma": [false],
     "ordered-imports": false,
     "no-angle-bracket-type-assertion": false,
-    "no-implicit-dependencies": [true, "dev"]
+    "no-implicit-dependencies": [
+      true,
+      "dev"
+    ],
+    "space-in-parens": [
+      true,
+      "never"
+    ],
+    "linebreak-style": [
+      true,
+      "LF"
+    ],
+    "arrow-parens": [
+      true
+    ],
+    "cyclomatic-complexity": [
+      true,
+      20
+    ],
+    "no-console": true,
+    "prefer-const": true
   }
 }
 

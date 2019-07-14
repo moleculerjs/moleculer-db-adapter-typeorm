@@ -1,7 +1,7 @@
 /* tslint:disable no-var-requires*/
 /* tslint:disable no-console*/
 import 'reflect-metadata';
-import {ModuleChecker as moduleChecker} from '../checker';
+import {ModuleChecker as moduleChecker} from './checker';
 // Create broker
 
 const {ServiceBroker} = require('moleculer');

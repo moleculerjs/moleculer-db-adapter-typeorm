@@ -4,7 +4,7 @@ const moleculer = require('moleculer');
 const storeService = require('moleculer-db');
 import {Action, Service} from 'moleculer-decorators';
 
-import {TypeOrmDbAdapter} from '../../adapter';
+import {TypeOrmDbAdapter} from '../src/adapter/adapter';
 import {Context} from 'moleculer';
 
 @Service({

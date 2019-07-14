@@ -44,7 +44,6 @@
     "@types/node": "^10.12.26",
     "bluebird": "^3.5.3",
     "chalk": "^2.4.2",
-    "class-transformer": "^0.2.0",
     "copyfiles": "^2.1.0",
     "coveralls": "^3.0.3",
     "jest": "^24.7.1",

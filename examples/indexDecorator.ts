@@ -1,28 +1,34 @@
-/* tslint:disable no-var-requires*/
 /* tslint:disable no-console*/
 import 'reflect-metadata';
 import { ModuleChecker as moduleChecker } from './checker';
-// Create broker
 
-const {ServiceBroker} = require('moleculer');
-const broker = new ServiceBroker({
-    logLevel: 'debug',
-    logger: console
-});
+import * as  moleculer from 'moleculer';
 import posts from './posts.service';
-// Load my service
+import { sleep } from './utils';
+
+const {ServiceBroker} = moleculer;
+const broker = new ServiceBroker({
+    logLevel: 'debug'
+});
+
 broker.createService(posts);
 
 const checker = new moduleChecker(11);
 
 // Start checks
-function start() {
-    broker.start()
-        .delay(500)
-        .then(() => checker.execute())
-        .catch(console.error)
-        .then(() => broker.stop())
-        .then(() => checker.printTotal());
+async function start() {
+    try {
+        await broker.start();
+        await sleep();
+        await checker.execute();
+    }
+    catch(e){
+        console.error(e);
+    }
+    finally{
+        await broker.stop();
+        checker.printTotal();
+    }
 }
 
 // --- TEST CASES ---
@@ -78,7 +84,7 @@ checker.add('--- UPDATE ---', () => broker.call('posts.update', {
 }), (doc: any) => {
     console.log(doc);
     return doc.id && doc.title === 'Hello 2' && doc.content === 'Post content 2' &&
-        doc.votes === 3 && doc.status === true && doc.updatedAt;
+            doc.votes === 3 && doc.status === true && doc.updatedAt;
 });
 
 // Get a post

@@ -1,11 +1,11 @@
-/* tslint:disable no-var-requires*/
+
 import { Post } from './Post';
 
-const storeService = require('moleculer-db');
+// @ts-ignore
+import * as  storeService from 'moleculer-db';
 import { Action, Service } from 'moleculer-decorators';
 
 import { TypeOrmDbAdapter } from '../src/adapter/adapter';
-// import { Context } from 'moleculer';
 
 import * as  moleculer from 'moleculer';
 

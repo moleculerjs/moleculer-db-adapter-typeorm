@@ -1,16 +1,17 @@
-/* tslint:disable no-var-requires*/
-const storeService = require('moleculer-db');
-const {ServiceBroker} = require('moleculer');
-/* tslint:enable */
+import { sleep } from './utils';
+
+// @ts-ignore
+import * as  storeService from 'moleculer-db';
+import * as  moleculer from 'moleculer';
+const {ServiceBroker} = moleculer;
 import { Post } from './Post';
 import { TypeOrmDbAdapter } from '../src';
-import { Context } from 'moleculer';
+
 /* tslint:disable no-console*/
 import { ModuleChecker as moduleChecker } from './checker';
 
 const broker = new ServiceBroker({
-    logLevel: 'debug',
-    logger: console
+    logLevel: 'debug'
 });
 
 broker.createService(storeService, {
@@ -28,7 +29,7 @@ broker.createService(storeService, {
     },
 
     actions: {
-        vote(ctx: Context) {
+        vote(ctx: moleculer.Context) {
             return this.adapter.findById(ctx.params.id)
                 .then((post: Post) => {
                     post.votes++;
@@ -38,7 +39,7 @@ broker.createService(storeService, {
                 .then((doc: any) => this.transformDocuments(ctx, ctx.params, doc));
         },
 
-        unvote(ctx: Context) {
+        unvote(ctx: moleculer.Context) {
             return this.adapter.findById(ctx.params.id)
                 .then((post: Post) => {
                     post.votes--;
@@ -57,14 +58,19 @@ broker.createService(storeService, {
 
 const checker = new moduleChecker(11);
 
-// Start checks
-function start() {
-    broker.start()
-        .delay(500)
-        .then(() => checker.execute())
-        .catch(console.error)
-        .then(() => broker.stop())
-        .then(() => checker.printTotal());
+async function start() {
+    try {
+        await broker.start();
+        await sleep();
+        await checker.execute();
+    }
+    catch(e){
+        console.error(e);
+    }
+    finally{
+        await broker.stop();
+        checker.printTotal();
+    }
 }
 
 // --- TEST CASES ---

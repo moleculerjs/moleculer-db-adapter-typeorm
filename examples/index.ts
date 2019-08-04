@@ -2,11 +2,11 @@
 const storeService = require('moleculer-db');
 const {ServiceBroker} = require('moleculer');
 /* tslint:enable */
-import {Post} from './Post';
-import {TypeOrmDbAdapter} from '../src';
-import {Context} from 'moleculer';
+import { Post } from './Post';
+import { TypeOrmDbAdapter } from '../src';
+import { Context } from 'moleculer';
 /* tslint:disable no-console*/
-import {ModuleChecker as moduleChecker} from './checker';
+import { ModuleChecker as moduleChecker } from './checker';
 
 const broker = new ServiceBroker({
     logLevel: 'debug',

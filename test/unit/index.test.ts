@@ -1,9 +1,9 @@
-import {ServiceBroker} from 'moleculer';
+import { ServiceBroker } from 'moleculer';
 
 jest.mock('typeorm');
-import {createConnection} from 'typeorm';
+import { createConnection } from 'typeorm';
 
-import {TypeOrmDbAdapter} from '../../src/adapter/adapter';
+import { TypeOrmDbAdapter } from '../../src/adapter/adapter';
 
 const fakeModel = jest.fn();
 
@@ -180,7 +180,7 @@ describe('Test TypeOrmAdapter', () => {
             });
 
             it('call count', () => {
-                adapter.createCursor =<any> jest.fn(() => Promise.resolve());
+                adapter.createCursor = <any> jest.fn(() => Promise.resolve());
                 const params = {};
                 adapter.count(params);
                 expect(adapter.createCursor).toHaveBeenCalledTimes(1);

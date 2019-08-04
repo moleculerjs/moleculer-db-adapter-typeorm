@@ -1,11 +1,13 @@
 /* tslint:disable no-var-requires*/
-import {Post} from './Post';
-const moleculer = require('moleculer');
-const storeService = require('moleculer-db');
-import {Action, Service} from 'moleculer-decorators';
+import { Post } from './Post';
 
-import {TypeOrmDbAdapter} from '../src/adapter/adapter';
-import {Context} from 'moleculer';
+const storeService = require('moleculer-db');
+import { Action, Service } from 'moleculer-decorators';
+
+import { TypeOrmDbAdapter } from '../src/adapter/adapter';
+// import { Context } from 'moleculer';
+
+import * as  moleculer from 'moleculer';
 
 @Service({
     adapter: new TypeOrmDbAdapter({
@@ -26,7 +28,7 @@ export default class PostsService extends moleculer.Service {
     @Action({
         // params: {id: 'number'},
     })
-    public async vote(ctx: Context) {
+    public async vote(ctx: moleculer.Context) {
         return this.adapter.findById(ctx.params.id)
             .then((post: any) => {
                 post.votes++;
@@ -39,7 +41,7 @@ export default class PostsService extends moleculer.Service {
     @Action({
         // params: {id: 'number'},
     })
-    public async unvote(ctx: Context) {
+    public async unvote(ctx: moleculer.Context) {
         return this.adapter.findById(ctx.params.id)
             .then((post: any) => {
                 post.votes--;

@@ -1,16 +1,25 @@
 {
   "extends": [
-    "tslint-eslint-rules", "tslint:latest"
+    "tslint-eslint-rules",
+    "tslint:latest",
+    "tslint:recommended"
   ],
   "rules": {
-
-    "whitespace": [true, "check-typecast"],
-    "quotemark": [true, "single", "jsx-single"],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-single"
+    ],
     "indent": true,
     "interface-name": false,
-    "variable-name": [true, "allow-leading-underscore"],
+    "variable-name": [
+      true,
+      "allow-leading-underscore"
+    ],
     "one-line": false,
-    "trailing-comma": [false],
+    "trailing-comma": [
+      false
+    ],
     "ordered-imports": false,
     "no-angle-bracket-type-assertion": false,
     "no-implicit-dependencies": [
@@ -31,6 +40,15 @@
     "cyclomatic-complexity": [
       true,
       20
+    ],
+    "whitespace": [
+      true,
+      "check-typecast",
+      "check-operator",
+      "check-module",
+      "check-type",
+      "check-decl",
+      "check-type-operator"
     ],
     "no-console": true,
     "prefer-const": true

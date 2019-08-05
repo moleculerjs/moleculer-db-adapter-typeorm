@@ -1,5 +1,5 @@
 import loggerWrapper from './bin/logger';
-const logger = loggerWrapper(module);
+const logger: any = loggerWrapper(module);
 import 'reflect-metadata';
 import { ModuleChecker } from './checker';
 
@@ -8,8 +8,10 @@ import posts from './posts.service';
 import {  start } from './utils';
 
 const {ServiceBroker} = moleculer;
+const {extend} = moleculer.Logger;
 const broker = new ServiceBroker({
-    logLevel: 'debug'
+    logLevel: 'debug',
+    logger: (bindings: any) => extend(loggerWrapper(bindings)),
 });
 
 broker.createService(posts);

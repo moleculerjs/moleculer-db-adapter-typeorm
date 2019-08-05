@@ -1,6 +1,5 @@
-import { sleep } from './utils';
 import loggerWrapper from './bin/logger';
-const logger = loggerWrapper(module);
+const logger: any = loggerWrapper(module);
 // @ts-ignore
 import * as  storeService from 'moleculer-db';
 import * as  moleculer from 'moleculer';
@@ -8,11 +7,12 @@ const {ServiceBroker} = moleculer;
 import { Post } from './Post';
 import { TypeOrmDbAdapter } from '../src';
 
-/* tslint:disable no-console*/
-import { ModuleChecker as moduleChecker } from './checker';
-
+import { ModuleChecker } from './checker';
+import { start } from './utils';
+const {extend} = moleculer.Logger;
 const broker = new ServiceBroker({
-    logLevel: 'debug'
+    logLevel: 'debug',
+    logger: (bindings: any) => extend(loggerWrapper(bindings)),
 });
 
 broker.createService(storeService, {
@@ -57,24 +57,7 @@ broker.createService(storeService, {
     }
 });
 
-const checker = new moduleChecker(11);
-
-async function start() {
-    try {
-        await broker.start();
-        await sleep();
-        await checker.execute();
-    }
-    catch(e){
-        console.error(e);
-    }
-    finally{
-        await broker.stop();
-        checker.printTotal();
-    }
-}
-
-// --- TEST CASES ---
+const checker = new ModuleChecker(11);
 
 let id: any = [];
 
@@ -162,4 +145,4 @@ checker.add('--- COUNT ---', () => broker.call('posts.count'), (res: any) => {
     return res === 0;
 });
 
-start();
+start(broker, checker);

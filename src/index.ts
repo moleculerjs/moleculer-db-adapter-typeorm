@@ -1,1 +1,1 @@
-export {TypeOrmDbAdapter} from './adapter/adapter';
+export { TypeOrmDbAdapter } from './adapter/adapter';

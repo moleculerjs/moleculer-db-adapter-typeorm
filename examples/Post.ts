@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 @Entity()
 export class Post {
 

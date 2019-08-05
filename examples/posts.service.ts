@@ -1,12 +1,15 @@
-/* tslint:disable no-var-requires*/
-import {Post} from './Post';
-const moleculer = require('moleculer');
-const storeService = require('moleculer-db');
-import {Action, Service} from 'moleculer-decorators';
 
-import {TypeOrmDbAdapter} from '../src/adapter/adapter';
-import {Context} from 'moleculer';
+import { Post } from './Post';
 
+// @ts-ignore
+import * as  storeService from 'moleculer-db';
+import { Action, Service } from 'moleculer-decorators';
+
+import { TypeOrmDbAdapter } from '../src/adapter/adapter';
+
+import * as  moleculer from 'moleculer';
+
+const voteSchema = {id: {type:  'number'}};
 @Service({
     adapter: new TypeOrmDbAdapter({
         database: 'memory',
@@ -24,9 +27,9 @@ import {Context} from 'moleculer';
 export default class PostsService extends moleculer.Service {
 
     @Action({
-        // params: {id: 'number'},
+         params: voteSchema
     })
-    public async vote(ctx: Context) {
+    public async vote(ctx: moleculer.Context) {
         return this.adapter.findById(ctx.params.id)
             .then((post: any) => {
                 post.votes++;
@@ -37,9 +40,9 @@ export default class PostsService extends moleculer.Service {
     }
 
     @Action({
-        // params: {id: 'number'},
+        params: voteSchema
     })
-    public async unvote(ctx: Context) {
+    public async unvote(ctx: moleculer.Context) {
         return this.adapter.findById(ctx.params.id)
             .then((post: any) => {
                 post.votes--;

@@ -1,4 +1,5 @@
-/* tslint:disable no-console*/
+import loggerWrapper from './bin/logger';
+const logger = loggerWrapper(module);
 import chalk from 'chalk';
 
 import * as Promise from 'bluebird';
@@ -34,8 +35,7 @@ export class ModuleChecker {
 
     public printTitle(text: string) {
 
-        console.log();
-        console.log(chalk.yellow.bold(`--- ${text} ---`));
+        logger.info(chalk.yellow.bold(`\n--- ${text} ---`));
     }
 
     public checkValid(cond: any) {
@@ -46,17 +46,17 @@ export class ModuleChecker {
 
         if (res) {
             this.ok++;
-            console.log(chalk.bgGreen.yellow.bold('--- OK ---'));
+            logger.info(chalk.bgGreen.yellow.bold('--- OK ---'));
         } else {
             this.fail++;
-            console.log(chalk.bgRed.yellow.bold('!!! FAIL !!!'));
+            logger.error(chalk.bgRed.yellow.bold('!!! FAIL !!!'));
         }
     }
 
     public printTotal() {
-        console.log();
-        console.log(chalk.bgGreen.yellow.bold(`--- OK: ${this.ok} of ${this.okCount} ---`),
-            this.fail > 0 ? ' | ' + chalk.bgRed.yellow.bold(`!!! FAIL: ${this.fail} !!!`) : '');
-        console.log();
+        const optionalParams = this.fail > 0 ? ' | ' + chalk.bgRed.yellow.bold(`!!! FAIL: ${this.fail} !!!`) : '';
+        logger.info(chalk.bgGreen.yellow.bold(`--- OK: ${this.ok} of ${this.okCount} ---`),
+            optionalParams + '\n');
+
     }
 }

@@ -9,6 +9,7 @@ import { TypeOrmDbAdapter } from '../src/adapter/adapter';
 
 import * as  moleculer from 'moleculer';
 
+const voteSchema = {id: {type:  'number'}};
 @Service({
     adapter: new TypeOrmDbAdapter({
         database: 'memory',
@@ -26,7 +27,7 @@ import * as  moleculer from 'moleculer';
 export default class PostsService extends moleculer.Service {
 
     @Action({
-        // params: {id: 'number'},
+         params: voteSchema
     })
     public async vote(ctx: moleculer.Context) {
         return this.adapter.findById(ctx.params.id)
@@ -39,7 +40,7 @@ export default class PostsService extends moleculer.Service {
     }
 
     @Action({
-        // params: {id: 'number'},
+        params: voteSchema
     })
     public async unvote(ctx: moleculer.Context) {
         return this.adapter.findById(ctx.params.id)

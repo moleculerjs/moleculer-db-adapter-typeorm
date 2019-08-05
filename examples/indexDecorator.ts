@@ -1,10 +1,11 @@
-/* tslint:disable no-console*/
+import loggerWrapper from './bin/logger';
+const logger = loggerWrapper(module);
 import 'reflect-metadata';
-import { ModuleChecker as moduleChecker } from './checker';
+import { ModuleChecker } from './checker';
 
 import * as  moleculer from 'moleculer';
 import posts from './posts.service';
-import { sleep } from './utils';
+import {  start } from './utils';
 
 const {ServiceBroker} = moleculer;
 const broker = new ServiceBroker({
@@ -13,31 +14,13 @@ const broker = new ServiceBroker({
 
 broker.createService(posts);
 
-const checker = new moduleChecker(11);
-
-// Start checks
-async function start() {
-    try {
-        await broker.start();
-        await sleep();
-        await checker.execute();
-    }
-    catch(e){
-        console.error(e);
-    }
-    finally{
-        await broker.stop();
-        checker.printTotal();
-    }
-}
-
-// --- TEST CASES ---
+const checker = new ModuleChecker(11);
 
 let id: any = [];
 
 // Count of posts
 checker.add('COUNT', () => broker.call('posts.count'), (res: any) => {
-    console.log(res);
+    logger.info('',res);
     return res === 0;
 });
 
@@ -49,13 +32,13 @@ checker.add('--- CREATE ---', () => broker.call('posts.create', {
     votes: 2
 }), (doc: any) => {
     id = doc.id;
-    console.log('Saved: ', doc);
+    logger.info('Saved: ', doc);
     return doc.id && doc.title === 'Hello' && doc.content === 'Post content' && doc.votes === 2 && doc.status === true;
 });
 
 // List posts
 checker.add('--- FIND ---', () => broker.call('posts.find'), (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res.length === 1 && res[0].id === id;
 });
 
@@ -63,7 +46,7 @@ checker.add('--- FIND ---', () => broker.call('posts.find'), (res: any) => {
 checker.add('--- GET ---', () => {
     return broker.call('posts.get', {id});
 }, (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res.id === id;
 });
 
@@ -71,7 +54,7 @@ checker.add('--- GET ---', () => {
 checker.add('--- VOTE ---', () => broker.call('posts.vote', {
     id
 }), (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res.id === id && res.votes === 3;
 });
 
@@ -82,14 +65,14 @@ checker.add('--- UPDATE ---', () => broker.call('posts.update', {
     title: 'Hello 2',
     updatedAt: new Date()
 }), (doc: any) => {
-    console.log(doc);
+    logger.info(doc);
     return doc.id && doc.title === 'Hello 2' && doc.content === 'Post content 2' &&
             doc.votes === 3 && doc.status === true && doc.updatedAt;
 });
 
 // Get a post
 checker.add('--- GET ---', () => broker.call('posts.get', {id}), (doc: any) => {
-    console.log(doc);
+    logger.info(doc);
     return doc.id === id && doc.title === 'Hello 2' && doc.votes === 3;
 });
 
@@ -97,26 +80,26 @@ checker.add('--- GET ---', () => broker.call('posts.get', {id}), (doc: any) => {
 checker.add('--- UNVOTE ---', () => broker.call('posts.unvote', {
     id
 }), (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res.id === id && res.votes === 2;
 });
 
 // Count of posts
 checker.add('--- COUNT ---', () => broker.call('posts.count'), (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res === 1;
 });
 
 // Remove a post
 checker.add('--- REMOVE ---', () => broker.call('posts.remove', {id}), (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res.id === id;
 });
 
 // Count of posts
 checker.add('--- COUNT ---', () => broker.call('posts.count'), (res: any) => {
-    console.log(res);
+    logger.info(res);
     return res === 0;
 });
 
-start();
+start(broker, checker);

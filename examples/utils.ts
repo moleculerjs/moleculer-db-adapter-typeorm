@@ -1,3 +1,7 @@
+/* tslint:disable:no-console */
+import { ServiceBroker } from 'moleculer';
+import { ModuleChecker } from './checker';
+
 const ONE_SECOND = 1000;
 export function sleep(defaultSleep = 0.5) {
     return new Promise((resolve) => {
@@ -18,4 +22,19 @@ export async function batchRunner(items: any[], action: any, batchSize: number) 
         await sleep();
     }
     return result;
+}
+
+export async function start(broker: ServiceBroker, checker: ModuleChecker) {
+    try {
+        await broker.start();
+        await sleep();
+        await checker.execute();
+    }
+    catch(e){
+        console.error(e);
+    }
+    finally{
+        await broker.stop();
+        checker.printTotal();
+    }
 }

@@ -1,4 +1,3 @@
-
 import {
 
     createConnection,
@@ -11,7 +10,7 @@ import {
 } from 'typeorm';
 import * as Moleculer from 'moleculer';
 /* tslint:disable-next-line */
-import {Service, ServiceBroker} from 'moleculer';
+import { Service, ServiceBroker } from 'moleculer';
 
 interface IndexMap {
     [key: string]: string;
@@ -83,9 +82,9 @@ export class TypeOrmDbAdapter<T> {
 
     public connect() {
         const connectionPromise = createConnection({
-            ...this.opts,
             entities: [this.entity],
-            synchronize: true
+            synchronize: true,
+            ...this.opts
         });
         return connectionPromise.then((connection) => {
             this.connection = connection;
@@ -102,8 +101,8 @@ export class TypeOrmDbAdapter<T> {
     }
 
     public updateMany(where: FindConditions<T>, update: DeepPartial<T>) {
-        const criteria: FindConditions<T> = {where} as any;
-        return this.repository.update(criteria,<any>  update);
+        const criteria: FindConditions<T> = { where } as any;
+        return this.repository.update(criteria, <any> update);
     }
 
     public updateById(id: number, update: { $set: DeepPartial<T> }) {
@@ -117,7 +116,7 @@ export class TypeOrmDbAdapter<T> {
     public removeById(id: number) {
         const result = this.repository.delete(id);
         return result.then(() => {
-            return {id};
+            return { id };
         });
     }
 

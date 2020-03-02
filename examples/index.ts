@@ -1,25 +1,25 @@
-import loggerWrapper from './bin/logger';
 // @ts-ignore
-import * as  storeService from 'moleculer-db';
-import * as  moleculer from 'moleculer';
-const {ServiceBroker} = moleculer;
+import * as storeService from 'moleculer-db';
+import * as moleculer from 'moleculer';
+const { ServiceBroker } = moleculer;
 import { Post } from './Post';
 import { TypeOrmDbAdapter } from '../src';
 
 import { ModuleChecker } from './checker';
 import { start } from './utils';
 import { testCasesFiller } from './checkerTestCases';
-const {extend} = moleculer.Logger;
 const broker = new ServiceBroker({
-    logLevel: 'debug',
-    logger: (bindings: any) => extend(loggerWrapper(bindings)),
+    logLevel: 'debug'
 });
 
-broker.createService(storeService, {
+interface PostPayload {
+    id: any;
+}
+broker.createService({ ...storeService, name: 'store' }, {
     adapter: new TypeOrmDbAdapter({
         database: 'memory',
         name: 'memory',
-        type: 'sqlite',
+        type: 'sqlite'
     }),
     name: 'posts',
 
@@ -30,7 +30,7 @@ broker.createService(storeService, {
     },
 
     actions: {
-        vote(ctx: moleculer.Context) {
+        vote(ctx: moleculer.Context<PostPayload>) {
             return this.adapter.findById(ctx.params.id)
                 .then((post: Post) => {
                     post.votes++;
@@ -40,7 +40,7 @@ broker.createService(storeService, {
                 .then((doc: any) => this.transformDocuments(ctx, ctx.params, doc));
         },
 
-        unvote(ctx: moleculer.Context) {
+        unvote(ctx: moleculer.Context<PostPayload>) {
             return this.adapter.findById(ctx.params.id)
                 .then((post: Post) => {
                     post.votes--;

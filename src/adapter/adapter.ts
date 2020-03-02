@@ -1,12 +1,11 @@
 import {
-
     createConnection,
     ConnectionOptions,
     Connection,
     EntitySchema,
     Repository,
     FindOneOptions,
-    DeepPartial, FindConditions, FindManyOptions
+    DeepPartial, FindConditions, SelectQueryBuilder
 } from 'typeorm';
 import * as Moleculer from 'moleculer';
 /* tslint:disable-next-line */
@@ -128,50 +127,65 @@ export class TypeOrmDbAdapter<T> {
         return entity;
     }
 
-    public createCursor(params: any, isCounting: boolean = false) {
-        if (params) {
-            const query: FindManyOptions<T> = {
-                where: params.query || {}
-            };
-            this._enrichWithOptionalParameters(params, query);
+    public createCursor(_params: any, isCounting: boolean = false) {
+        const queryBuilder = this.repository.createQueryBuilder('entity');
 
-            return this._runQuery(isCounting, query);
+        const params = this._enrichWithCustomParameters(_params, queryBuilder);
+
+        if (params) {
+            this._enrichWithOptionalParameters(params, queryBuilder);
+
+            if (params.query) {
+                queryBuilder.where(params.query);
+            }
         }
 
-        return this._runQuery(isCounting);
+        return this._runQuery(isCounting, queryBuilder);
     }
 
-    private _runQuery(isCounting: boolean, query?: FindManyOptions<T>) {
+    private async _runQuery(isCounting: boolean, queryBuilder: SelectQueryBuilder<T>) {
         if (isCounting) {
-            return this.repository.count(query);
+            queryBuilder.select('COUNT(*)', 'total').orderBy().offset(0).limit(1);
+            const { total } = await queryBuilder.getRawOne();
+            return parseInt(total, 10) || 0;
         }
         else {
-            return this.repository.find(query);
+            return queryBuilder.getMany();
         }
     }
 
-    private _enrichWithOptionalParameters(params: any, query: FindManyOptions<T>) {
+    private _enrichWithOptionalParameters(params: any, queryBuilder: SelectQueryBuilder<T>) {
         if (params.search) {
             throw new Error('Not supported because of missing or clause meanwhile in typeorm');
         }
 
         if (params.sort) {
-            const sort = this.transformSort(params.sort);
+            const sort = this._transformSort(params.sort);
             if (sort) {
-                query.order = sort as any;
+                Object.entries(sort).map(([field, order]) => {
+                    queryBuilder.orderBy(`entity.${field}`, order);
+                });
             }
         }
 
         if (Number.isInteger(params.offset) && params.offset > 0) {
-            query.skip = params.offset;
+            queryBuilder.offset(params.offset);
         }
 
         if (Number.isInteger(params.limit) && params.limit > 0) {
-            query.take = params.limit;
+            queryBuilder.limit(params.limit);
+
         }
     }
 
-    private transformSort(paramSort: string | string[]): { [columnName: string]: ('ASC' | 'DESC') } {
+    private _enrichWithCustomParameters(params: any, queryBuilder: SelectQueryBuilder<T>) {
+        if (this.service.schema.cursorOptions != null) {
+            return this.service.schema.cursorOptions.call(this.service, params, queryBuilder) || params;
+        }
+        return params;
+    }
+
+    private _transformSort(paramSort: string | string[]): { [columnName: string]: ('ASC' | 'DESC') } {
         let sort = paramSort;
         if (typeof sort === 'string') {
             sort = sort.replace(/,/, ' ').split(' ');

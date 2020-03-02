@@ -2,34 +2,36 @@
 import { Post } from './Post';
 
 // @ts-ignore
-import * as  storeService from 'moleculer-db';
+import * as storeService from 'moleculer-db';
 import { Action, Service } from 'moleculer-decorators';
 
 import { TypeOrmDbAdapter } from '../src/adapter/adapter';
 
-import * as  moleculer from 'moleculer';
+import * as moleculer from 'moleculer';
 
-const voteSchema = {id: {type:  'number'}};
+const voteSchema = { id: { type: 'number' } };
+interface VotePayload {
+    id: number;
+}
 @Service({
     adapter: new TypeOrmDbAdapter({
         database: 'memory',
         name: 'memory',
-        type: 'sqlite',
+        type: 'sqlite'
     }),
-    mixins: [storeService],
+    mixins: [{ ...storeService, name: 'store' }],
     model: Post,
     name: 'posts',
     settings: {
         fields: ['id', 'title', 'content', 'votes', 'status', 'author'],
         idField: 'id'
-    },
+    }
 })
 export default class PostsService extends moleculer.Service {
-
     @Action({
-         params: voteSchema
+        params: voteSchema
     })
-    public async vote(ctx: moleculer.Context) {
+    public async vote(ctx: moleculer.Context<VotePayload>) {
         return this.adapter.findById(ctx.params.id)
             .then((post: any) => {
                 post.votes++;
@@ -42,7 +44,7 @@ export default class PostsService extends moleculer.Service {
     @Action({
         params: voteSchema
     })
-    public async unvote(ctx: moleculer.Context) {
+    public async unvote(ctx: moleculer.Context<VotePayload>) {
         return this.adapter.findById(ctx.params.id)
             .then((post: any) => {
                 post.votes--;
@@ -56,5 +58,4 @@ export default class PostsService extends moleculer.Service {
         this.logger.info('Connected successfully');
         return this.adapter.clear();
     }
-
 }

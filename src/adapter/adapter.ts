@@ -83,9 +83,10 @@ export class TypeOrmDbAdapter<T> {
 
     public connect() {
         const connectionPromise = createConnection({
-            ...this.opts,
             entities: [this.entity],
-            synchronize: true
+            synchronize: true,
+            ...this.opts
+
         });
         return connectionPromise.then((connection) => {
             this.connection = connection;
